@@ -362,28 +362,7 @@ DSSurvey %>%
 DSSurvey %>% 
   mutate(diagnoses_total = health_celiac + health_diabetes + health_leuk + 
            health_apnea + health_lowiron + health_thyroid + health_swallow + 
-           health_ALZ + health_hiBP + health_CHD + ADHD + autism)   -> 
-  DSSurvey
-
-DSSurvey %>%
-  mutate(mental_total = mentaldiag_anxiety + mentaldiag_bipolar + 
-           mentaldiag_dep + mentaldiag_OCD + mentaldiag_schiz) ->
-  DSSurvey
-
-DSSurvey %>%
-  mutate(regression_total = regress_attend + regress_cat + regress_dress + 
-           regress_RW + regress_social + regress_selfcare) ->
-  DSSurvey
-
-DSSurvey %>%
-  mutate(total_total = regress_attend + regress_cat + regress_dress + 
-           regress_RW + regress_social + regress_selfcare + health_celiac + 
-           health_diabetes + health_leuk + health_apnea + health_lowiron + 
-           health_thyroid + health_swallow + health_ALZ + health_hiBP + 
-           health_CHD + ADHD + autism) ->
-  DSSurvey
-
-
+           health_ALZ + health_hiBP + health_CHD)   -> DSSurvey
 
 # factor variables where levels need to be ordered
 DSSurvey %>%
@@ -548,6 +527,32 @@ DSSurvey %>%
   mutate(firstnotified = as.factor(firstnotified)) %>% 
   select(-firstnotified2) -> DSSurvey
 
+# Cleaning independent/guardian 
+
+DSSurvey %>% 
+  mutate(independent = as.character(independent)) %>% 
+  mutate(independent = if_else((str_detect(independent, "Unsure") | is.na(independent)),
+                               "No",
+                               independent
+  )
+  ) %>%
+  
+  mutate(independent = if_else((str_detect(independent, "Yes")) & 
+                                 str_detect(guardian, "Parent"),
+                               "No",
+                               independent
+  )
+  ) %>%
+  mutate(independent = if_else((is.na(independent)),
+                               "Yes",
+                               independent
+  )
+  ) %>%
+  mutate(independent = as.factor(independent)) -> DSSurvey 
+
+summary(DSSurvey$independent) %>% 
+  select(-guardian) -> DSSurvey
+
 # cleans transporttype -- specific to current survey
 
 DSSurvey %>% 
@@ -563,13 +568,4 @@ DSSurvey %>%
   select(-transporttype2) ->
   DSSurvey
 
-View(DSSurvey$transporttype)
-
-
-
-
-
-
-
-
-
+View(DSSurvey$transporttype
