@@ -547,3 +547,29 @@ DSSurvey %>%
   ) %>% 
   mutate(firstnotified = as.factor(firstnotified)) %>% 
   select(-firstnotified2) -> DSSurvey
+
+# cleans transporttype -- specific to current survey
+
+DSSurvey %>% 
+  mutate(transporttype = as.character(transporttype)) %>% 
+  mutate(transporttype = if_else(is.na(transporttype) &
+                                   (str_detect(transporttype2, "I drive") |
+                                      str_detect(transporttype2, "Driven by parents")),
+                                 "Car",
+                                 transporttype
+                                 )
+         ) %>% 
+  mutate(transporttype = as.factor(transporttype)) %>% 
+  select(-transporttype2) ->
+  DSSurvey
+
+View(DSSurvey$transporttype)
+
+
+
+
+
+
+
+
+
