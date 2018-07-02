@@ -1,4 +1,3 @@
-
 #######################################
 #
 # Initial cleaning of variables that can
@@ -259,7 +258,7 @@ numeric_cols <- c("concern_ALZ",
                   "healthcare_group",
                   "healthcare_PCP",
                   "healthcare_respond"
-                  )
+)
 
 # List columns that should be logical
 # and set to TRUE if there is content in the cell
@@ -317,7 +316,7 @@ all_that_apply_cols <- c( "clinic_full",
                           "substance_limit",
                           "substance_other",
                           "substance_therapy"
-                          )
+)
 
 # Columns where unsure = NA
 unsure_cols <- c( "therapy_PT",
@@ -326,7 +325,7 @@ unsure_cols <- c( "therapy_PT",
                   "therapy_speech",
                   "therapy_music",
                   "therapy_equine"
-                  )
+)
 
 # Make the conversions needed on the lists above
 DSSurvey %>% 
@@ -357,6 +356,31 @@ DSSurvey %>%
 # create an age column based on DSbirthyear
 DSSurvey %>% 
   mutate(DSage = 2018 - DSbirthyear) ->
+  DSSurvey
+
+# create a diagnoses_total column
+DSSurvey %>% 
+  mutate(diagnoses_total = health_celiac + health_diabetes + health_leuk + 
+           health_apnea + health_lowiron + health_thyroid + health_swallow + 
+           health_ALZ + health_hiBP + health_CHD + ADHD + autism)   -> 
+  DSSurvey
+
+DSSurvey %>%
+  mutate(mental_total = mentaldiag_anxiety + mentaldiag_bipolar + 
+           mentaldiag_dep + mentaldiag_OCD + mentaldiag_schiz) ->
+  DSSurvey
+
+DSSurvey %>%
+  mutate(regression_total = regress_attend + regress_cat + regress_dress + 
+           regress_RW + regress_social + regress_selfcare) ->
+  DSSurvey
+
+DSSurvey %>%
+  mutate(total_total = regress_attend + regress_cat + regress_dress + 
+           regress_RW + regress_social + regress_selfcare + health_celiac + 
+           health_diabetes + health_leuk + health_apnea + health_lowiron + 
+           health_thyroid + health_swallow + health_ALZ + health_hiBP + 
+           health_CHD + ADHD + autism) ->
   DSSurvey
 
 
