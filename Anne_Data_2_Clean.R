@@ -191,6 +191,8 @@ DSSurvey %>%
 logical_cols <- c("ADHD",
                   "autism",
                   "substance_abuse"
+            
+                  
 )  
 
 # List columns to convert short list responses to factor
@@ -218,9 +220,7 @@ factor_cols <- c( "clinic",
                   "livingsituation",
                   "livingsituation2",
                   "mental_will2",
-                  "mentaldiag",
                   "mentaldiag_other",
-                  "mentaltreat",
                   "mentaltreat_other",
                   "race_respond",
                   "race_respond2",
@@ -548,9 +548,7 @@ DSSurvey %>%
                                independent
   )
   ) %>%
-  mutate(independent = as.factor(independent)) -> DSSurvey 
-
-summary(DSSurvey$independent) %>% 
+  mutate(independent = as.factor(independent)) %>% 
   select(-guardian) -> DSSurvey
 
 # cleans transporttype -- specific to current survey
@@ -562,10 +560,27 @@ DSSurvey %>%
                                       str_detect(transporttype2, "Driven by parents")),
                                  "Car",
                                  transporttype
-                                 )
-         ) %>% 
+  )
+  ) %>% 
   mutate(transporttype = as.factor(transporttype)) %>% 
   select(-transporttype2) ->
   DSSurvey
 
-View(DSSurvey$transporttype
+# Living situation 2: No Change 
+DSSurvey %>% 
+  select(-livingsituation2) -> DSSurvey
+
+# Dealing with difficult logic columns
+
+DSSurvey %>%
+  mutate(substance_none = if_else(is.na(substance_none), FALSE, TRUE)) ->
+  DSSurvey
+
+DSSurvey %>%
+  mutate(mentaltreat = if_else(is.na(mentaltreat), FALSE, TRUE)) ->
+  DSSurvey
+
+DSSurvey %>%
+  mutate(mentaldiag = if_else(is.na(mentaldiag), FALSE, TRUE)) ->
+  DSSurvey
+
