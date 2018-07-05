@@ -701,4 +701,240 @@ DSSurvey %>%
   mutate(mentaldiag = if_else(is.na(mentaldiag), FALSE, TRUE)) ->
   DSSurvey
 
+# cleans clinic
+
+DSSurvey %>% 
+  mutate(clinic = as.character(clinic)) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Children's Boston until age 3 now is at MGH") |
+                            str_detect(clinic, "Mass general DS program") |
+                            str_detect(clinic, "MGH") |
+                            str_detect(clinic, "Massachusetts General Down Syndrome Clinic") |
+                            str_detect(clinic, "MGH Down Syndrome Clinic") |
+                            str_detect(clinic, "Mass General Down Syndrome Clinic") |
+                            str_detect(clinic, "Mass General") |
+                            str_detect(clinic, "MGH adult Down syndrome clinic") |
+                            str_detect(clinic, "Mass General Down Syndrome") |
+                            str_detect(clinic, "Did Mass General") |
+                            str_detect(clinic, "Children's Hospital Boston and MGH") |
+                            str_detect(clinic, "Mess General DS Clinic with Dr. Skotko") |
+                            str_detect(clinic, "Gillette and mass general") |
+                            str_detect(clinic, "Mass General DS Clinic") |
+                            str_detect(clinic, "MGH Down Syndrome Clinic (Dr. Brian Skotko)") |
+                            str_detect(clinic, "Mass General DS Adult program") |
+                            str_detect(clinic, "MGH Down Syndrome Program") |
+                            str_detect(clinic, "MASS GEN HOSPITAL") |
+                            str_detect(clinic, "Mass General Hospital Down Syndrome Program") |
+                            str_detect(clinic, "Mgh Down Syndrome Program") |
+                            str_detect(clinic, "Boston mass general") |
+                            str_detect(clinic, "MGH Down syndrome Program") |
+                            str_detect(clinic, "Down Syndrome Program @ Mass General Hospital") |
+                            str_detect(clinic, "Mass General Down Syndrome clinic") |
+                            str_detect(clinic, "Mgh") |
+                            str_detect(clinic, "Children's  then  MGH") |
+                            str_detect(clinic, "Mass General Hospital") |
+                            str_detect(clinic, "Mass General Down syndrome clinic") |
+                            str_detect(clinic, "MGH and Childrens") |
+                            str_detect(clinic, "MGH Our 2nd appt is coming up") |
+                            str_detect(clinic, "Children's Hispital, then Mass General") |
+                            str_detect(clinic, "Adults w/DS mass general") |
+                            str_detect(clinic, "Children's and now MGH") |
+                            str_detect(clinic, "Mass General downs clinic") |
+                            str_detect(clinic, "mgh") |
+                            str_detect(clinic, "Mass General Hospital DS Clinic")),
+                          "Mass General Hospital in Boston, Massachusetts",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "CH Boston") |
+                             str_detect(clinic, "Boston childrens ") |
+                             str_detect(clinic, "Boston Childrens") |
+                             str_detect(clinic, "Boston Childrens Hospital Department of Developmental Medicine") |
+                             str_detect(clinic, "Mass General and Boston Childrens") |
+                             str_detect(clinic, "Bch") |
+                             str_detect(clinic, "Boston") |
+                             str_detect(clinic, "Boston Childrens Hospital") |
+                             str_detect(clinic, "Children's hospital") |
+                             str_detect(clinic, "Childrens Hospital DS Clinic")),
+                          "Boston Children's Hosptial in Massachusetts",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Children's hospital T21 program") |
+                             str_detect(clinic, "Childrens hospital of Philadelphia") |
+                             str_detect(clinic, "Childrens Hospital of Philadelphia T21 Center")),
+                          "Trisomy 21 Program of Philidelphia, Pennsylvania",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Vanderbilt") |
+                             str_detect(clinic, "Down syndrome clinic at Vanderbilt childrens hospital ")),
+                          "Vanderbilt Children's Hospital in Nashville Tennessee",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Kennedy Krieger") |
+                             str_detect(clinic, "Boston childrens hospital and Kennedy krieger")),
+                          "Kennedy Kreiger Institute in Baltimore, Maryland",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Kluge Center")),
+                           "Kluge Children's Rehab Center in Charlottesville, Virginia",
+                           clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Vanderbilt") |
+                             str_detect(clinic, "Down syndrome clinic at Vanderbilt childrens hospital ")),
+                          "Vanderbilt Children's Hospital",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Neonatal follow up clinic , Sunnybrook hospital , Toronto ")),
+                          "Sunnybrook Hospital",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Eastern PA Down syndrome clinic")),
+                          "Easten Pennsylvania Down Syndrome Clinic",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Valley Medical Center Dr Partridge")),
+                          "Valley Medical Center in Renton, Washington",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Children's hospital in Plano, TX")),
+                          "Children's Medical Center in Plano, Texas",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Orlando, Warner House")),
+                          "Warner House",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Jane & Richard Thomas Center in Cincinnati") |
+                             str_detect(clinic, "Thomas Center for Down Syndrome Cincinnati Children's")),
+                          "Jane and Richard Thomas Center in Cinncinatti, Ohio",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Down syndrome program at Virginia Mason Issaquah (WA)")),
+                          "Virginia Mason Issaquah in Issaquah, Washington",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Kirsch Center")),
+                          "Kirsch Center in Rochester, New York",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Center for Pediatric Brain at St. Alexias Hoffman Estates, IL and Milwaukee Childrens Hospital")),
+                          "Milwaukee Children's Hospital in Wisconsin",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Linda Cirnic in Denver")),
+                          "Linda Cirnic Center in Denver, Colorado",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Duke Down Syndrome clinic")),
+                          "Duke Down Syndrome Clinic in Durham, North Carolina",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Christiana Care")),
+                          "Christiana Hospital in Newark, Deleware",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Riley Hospital")),
+                          "Riley Hospital for Children in Indianapolis, Indiana",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Avera McKennan Children's")),
+                          "Avera Children's Clinic in Souix Falls, South Dakota",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Stanford Clinic, Palo Alto, CA")),
+                          "Stanford Medical Center in Palo Alto, California",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Rhode Island Child Neurodevelopment Center")),
+                          "Child Neurodevelopment Center in Providence, Rhode Island",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Down Syndrome Clinic at Children's of New Orleans")),
+                          "Children's Hospital in New Orleans, Louisiana",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Childrens mercy kansas city Mo")),
+                          "Children's Mercy in Kansas City, Missouri",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Crotched Mountain outpatient clinic under Carl Cooley")),
+                          "Crotched Mountain Outpatient in Greenfield, New Hampshire",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "It was in Dallas, TX. Unsure of the name")),
+                          "Children's Health Specialty Center in Dallas, Texas",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Medical University of SC")),
+                          "Medical University of South Carolina in Charleston, South Carolina",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "In Pittsburgh, PA")),
+                          "Down Syndrome Clinic of Western Pennsylvania in Pittsburgh, Pennsylvania",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Judy Center, Hackensack, NJ")),
+                          "The Judy Center in Hackensack, New Jersey",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Texas children's hospital ")),
+                          "Texas Children's Hospital in Houston, Texas",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Can't remember") |
+                           str_detect(clinic, "Waste of time to go. I probably know more than they do from all the research I've done.") |
+                             str_detect(clinic, "Sie Center for Down Syndrome until last year. Moved east.")),
+                          "",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Sie Center for Down syndrome") |
+                             str_detect(clinic, "Sie Center")),
+                          "Sie Center in Denver, Colorado",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Nationwide Children's Hospital") |
+                             str_detect(clinic, "Nationwide Childrens Hospital")),
+                          "Nationwide Children's Hospital in Columbus, Ohio",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = if_else((str_detect(clinic, "Orlando florida") |
+                             str_detect(clinic, "Annual DSACF Clinic")),
+                          "Down Syndrome Association of Central Florida in Orlando, Florida",
+                          clinic
+                          )
+         ) %>% 
+  mutate(clinic = as.factor(clinic)) ->
+  DSSurvey
 
