@@ -218,8 +218,6 @@ factor_cols <- c( "clinic",
                   "livingsituation",
                   "livingsituation2",
                   "mental_will2",
-                  "mentaldiag",
-                  "mentaldiag_other",
                   "mentaltreat",
                   "mentaltreat_other",
                   "race_respond",
@@ -228,7 +226,6 @@ factor_cols <- c( "clinic",
                   "regress2",
                   "relationship",
                   "sex",
-                  "sexED_other",
                   "substance_abuse2",
                   "transporttype",
                   "transporttype2",
@@ -288,6 +285,7 @@ all_that_apply_cols <- c( "clinic_full",
                           "mental_will_side",
                           "mental_will_time",
                           "mental_will_untestable",
+                          "mentaldiag",
                           "mentaldiag_anxiety",
                           "mentaldiag_bipolar",
                           "mentaldiag_dep",
@@ -548,10 +546,8 @@ DSSurvey %>%
                                independent
   )
   ) %>%
-  mutate(independent = as.factor(independent)) -> DSSurvey 
-
-summary(DSSurvey$independent) %>% 
-  select(-guardian) -> DSSurvey
+  mutate(independent = as.factor(independent)) %>%
+  select(-guardian) -> DSSurvey 
 
 # cleans transporttype -- specific to current survey
 
@@ -562,10 +558,139 @@ DSSurvey %>%
                                       str_detect(transporttype2, "Driven by parents")),
                                  "Car",
                                  transporttype
-                                 )
-         ) %>% 
+  )
+  ) %>% 
   mutate(transporttype = as.factor(transporttype)) %>% 
   select(-transporttype2) ->
   DSSurvey
 
-View(DSSurvey$transporttype
+# Cleans Substance abuse question
+DSSurvey %>%
+  select(-substance_abuse2) -> DSSurvey
+
+# Cleans mentaldiag_other, str_detect gives N/A when string is blank, 
+# requiring !is.na command
+DSSurvey %>% 
+  mutate(mentaldiag = if_else(str_detect(mentaldiag_other, "ADHD") |
+                                str_detect(mentaldiag_other, "Autism") &
+                                !is.na(str_detect(mentaldiag_other, "ADHD")) |
+                                !is.na(str_detect(mentaldiag_other, "Autism")),
+                                  TRUE,
+                                  mentaldiag)
+  ) %>%
+  
+  mutate(mentaldiag_dep = if_else(str_detect(mentaldiag_other, "depression") &
+                                    !is.na(str_detect(mentaldiag_other, "depression")),
+                                   TRUE,
+                                   mentaldiag_dep
+  )) %>%
+select(-mentaldiag_other) -> DSSurvey
+summary(DSSurvey$mentaldiag)
+# Cleans language2
+DSSurvey %>%
+  mutate(language=as.character(language)) %>%
+  mutate(language = if_else(is.na(language) & 
+                              (str_detect(language2, "Hindi")),
+                            "Hindi",
+                            language
+  )
+  ) %>%
+  mutate(language = as.factor(language)) %>% 
+  select(-language2) -> DSSurvey
+
+# Cleans regression
+DSSurvey %>%
+  select(-regress2) -> DSSurvey
+
+#Cleans race_respond2
+DSSurvey %>%
+  mutate(race_respond = as.character(race_respond)) %>%
+  mutate(race_respond2 = as.character(race_respond2)) %>%
+  mutate(race_respond = if_else(str_detect(race_respond2, "Also Asian") & (str_detect(race_respond, "White or Euro-American (Non-Hispanic)")),
+                             "Bi-racial",
+                             race_respond
+  )
+  ) %>%
+  mutate(race_respond = if_else(is.na(race_respond) &
+                               (str_detect(race_respond2, "Hispanic")),
+                             "Hispanic",
+                             race_respond)
+  ) %>%
+  mutate(race_respond = as.factor(race_respond)) %>%
+  select(-race_respond2) -> DSSurvey
+
+# Cleans sexED_other
+DSSurvey %>%
+  mutate(sexED_understand = if_else(str_detect(sexED_other, "understand") &
+                                      !is.na(str_detect(sexED_other, "understand")),
+                            TRUE,
+                            FALSE
+  )
+  ) %>%
+  mutate(sexED_young = if_else(str_detect(sexED_other, "year") |
+                                str_detect(sexED_other, "He is") |
+                                 str_detect(sexED_other, "He's") |
+                                 str_detect(sexED_other, "old") |
+                                 str_detect(sexED_other, "baby") &
+                                !is.na(str_detect(sexED_other, "year")) |
+                                !is.na(str_detect(sexED_other, "He is")) |
+                                 !is.na(str_detect(sexED_other, "He's")) |
+                                 !is.na(str_detect(sexED_other, "old")) |
+                                 !is.na(str_detect(sexED_other, "baby")),
+                              TRUE,
+                              FALSE)
+  ) -> DSSurvey
+
+# Fix healthcare columns
+DSSurvey %>%
+  mutate(healthcare_clinic = 6 - healthcare_clinic,
+         healthcare_respond = 6 - healthcare_respond,
+         healthcare_DS = 6 - healthcare_DS,
+         healthcare_group = 6 - healthcare_group,
+         healthcare_PCP = 6 - healthcare_PCP) %>% 
+  mutate(healthcare_clinic = if_else(is.na(healthcare_clinic),
+                 0,
+                 healthcare_clinic),
+         healthcare_respond = if_else(is.na(healthcare_respond),
+                                     0,
+                                     healthcare_respond),
+         healthcare_DS = if_else(is.na(healthcare_DS),
+                                     0,
+                                     healthcare_DS),
+         healthcare_group = if_else(is.na(healthcare_group),
+                                     0,
+                                     healthcare_group),
+         healthcare_PCP = if_else(is.na(healthcare_PCP),
+                                     0,
+                                     healthcare_PCP)) -> DSSurvey
+# Fix future columns
+DSSurvey %>%
+  mutate(future_access = if_else(is.na(future_access),
+                                     0,
+                                 future_access),
+         future_opps = if_else(is.na(future_opps),
+                                      0,
+                               future_opps),
+         future_housing = if_else(is.na(future_housing),
+                                 0,
+                                 future_housing),
+         future_employ = if_else(is.na(future_employ),
+                                    0,
+                                 future_employ),
+         future_ALZ = if_else(is.na(future_ALZ),
+                                  0,
+                              future_ALZ),
+         future_woGuardian = if_else(is.na(future_woGuardian),
+                              0,
+                              future_woGuardian)) -> DSSurvey
+  
+
+  
+  
+  
+
+  
+  
+  
+
+
