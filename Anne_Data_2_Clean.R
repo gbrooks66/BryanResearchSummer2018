@@ -218,7 +218,6 @@ factor_cols <- c( "clinic",
                   "livingsituation",
                   "livingsituation2",
                   "mental_will2",
-                  "mentaltreat",
                   "mentaltreat_other",
                   "race_respond",
                   "race_respond2",
@@ -285,7 +284,6 @@ all_that_apply_cols <- c( "clinic_full",
                           "mental_will_side",
                           "mental_will_time",
                           "mental_will_untestable",
-                          "mentaldiag",
                           "mentaldiag_anxiety",
                           "mentaldiag_bipolar",
                           "mentaldiag_dep",
@@ -549,6 +547,7 @@ DSSurvey %>%
   mutate(independent = as.factor(independent)) %>%
   select(-guardian) -> DSSurvey 
 
+
 # cleans transporttype -- specific to current survey
 
 DSSurvey %>% 
@@ -683,14 +682,23 @@ DSSurvey %>%
          future_woGuardian = if_else(is.na(future_woGuardian),
                               0,
                               future_woGuardian)) -> DSSurvey
-  
 
-  
-  
-  
+# Living situation 2: No Change 
+DSSurvey %>% 
+  select(-livingsituation2) -> DSSurvey
 
-  
-  
-  
+# Dealing with difficult logic columns
+
+DSSurvey %>%
+  mutate(substance_none = if_else(is.na(substance_none), FALSE, TRUE)) ->
+  DSSurvey
+
+DSSurvey %>%
+  mutate(mentaltreat = if_else(is.na(mentaltreat), FALSE, TRUE)) ->
+  DSSurvey
+
+DSSurvey %>%
+  mutate(mentaldiag = if_else(is.na(mentaldiag), FALSE, TRUE)) ->
+  DSSurvey
 
 
