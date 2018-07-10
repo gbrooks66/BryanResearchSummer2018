@@ -484,6 +484,10 @@ DSSurvey %>%
                              insurance)
   ) %>% 
   mutate(insurance = as.factor(insurance)) %>% 
+  mutate(insurance = 
+           factor(insurance, 
+                  levels = c("None","Public", "Both",
+                             "Private"))) %>% 
   select(-insurance2) -> DSSurvey
 
 
@@ -974,11 +978,29 @@ DSSurvey %>%
 
 
 
+DSSurvey %>% 
+  mutate(diagnoses_total = health_celiac + health_diabetes + health_leuk + 
+           health_apnea + health_lowiron + health_thyroid + health_swallow + 
+           health_ALZ + health_hiBP + health_CHD + ADHD + autism)   -> 
+DSSurvey
 
-  
-  
-  
+DSSurvey %>%
+  mutate(mental_total = mentaldiag_anxiety + mentaldiag_bipolar + 
+                        mentaldiag_dep + mentaldiag_OCD + mentaldiag_schiz) ->
+DSSurvey
 
+DSSurvey %>%
+  mutate(regression_total = regress_attend + regress_cat + regress_dress + 
+                            regress_RW + regress_social + regress_selfcare) ->
+DSSurvey
 
+DSSurvey %>%
+  mutate(total_total = regress_attend + regress_cat + regress_dress + 
+                       regress_RW + regress_social + regress_selfcare + health_celiac + 
+                       health_diabetes + health_leuk + health_apnea + health_lowiron + 
+                       health_thyroid + health_swallow + health_ALZ + health_hiBP + 
+                       health_CHD + ADHD + autism) ->
+DSSurvey
 
-
+DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
+DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
