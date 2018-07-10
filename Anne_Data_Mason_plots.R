@@ -88,3 +88,15 @@ DSSurvey %>%
   ggplot(aes(x = therapy_equine, y = DSage)) +
   geom_point() +
   facet_wrap(~ regression_total)
+
+# clinic vs total diagnoses
+DSSurvey %>% 
+  filter(!is.na(as.factor(clinic))) %>%
+  ggplot(aes(x = diagnoses_total, y = clinic)) +
+  geom_jitter()
+
+# clinic vs clinicdistance
+DSSurvey %>% 
+  filter(!is.na(as.factor(clinic))) %>%
+  ggplot(aes(x = clinicdistance, y = clinic)) +
+  geom_jitter()
