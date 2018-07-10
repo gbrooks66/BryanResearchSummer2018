@@ -484,6 +484,10 @@ DSSurvey %>%
                              insurance)
   ) %>% 
   mutate(insurance = as.factor(insurance)) %>% 
+  mutate(insurance = 
+           factor(insurance, 
+                  levels = c("None","Public", "Both",
+                             "Private"))) %>% 
   select(-insurance2) -> DSSurvey
 
 
@@ -574,16 +578,16 @@ DSSurvey %>%
                                 str_detect(mentaldiag_other, "Autism") &
                                 !is.na(str_detect(mentaldiag_other, "ADHD")) |
                                 !is.na(str_detect(mentaldiag_other, "Autism")),
-                                  TRUE,
-                                  mentaldiag)
+                              TRUE,
+                              mentaldiag)
   ) %>%
   
   mutate(mentaldiag_dep = if_else(str_detect(mentaldiag_other, "depression") &
                                     !is.na(str_detect(mentaldiag_other, "depression")),
-                                   TRUE,
-                                   mentaldiag_dep
+                                  TRUE,
+                                  mentaldiag_dep
   )) %>%
-select(-mentaldiag_other) -> DSSurvey
+  select(-mentaldiag_other) -> DSSurvey
 summary(DSSurvey$mentaldiag)
 # Cleans language2
 DSSurvey %>%
@@ -606,14 +610,14 @@ DSSurvey %>%
   mutate(race_respond = as.character(race_respond)) %>%
   mutate(race_respond2 = as.character(race_respond2)) %>%
   mutate(race_respond = if_else(str_detect(race_respond2, "Also Asian") & (str_detect(race_respond, "White or Euro-American (Non-Hispanic)")),
-                             "Bi-racial",
-                             race_respond
+                                "Bi-racial",
+                                race_respond
   )
   ) %>%
   mutate(race_respond = if_else(is.na(race_respond) &
-                               (str_detect(race_respond2, "Hispanic")),
-                             "Hispanic",
-                             race_respond)
+                                  (str_detect(race_respond2, "Hispanic")),
+                                "Hispanic",
+                                race_respond)
   ) %>%
   mutate(race_respond = as.factor(race_respond)) %>%
   select(-race_respond2) -> DSSurvey
@@ -622,22 +626,22 @@ DSSurvey %>%
 DSSurvey %>%
   mutate(sexED_understand = if_else(str_detect(sexED_other, "understand") &
                                       !is.na(str_detect(sexED_other, "understand")),
-                            TRUE,
-                            FALSE
+                                    TRUE,
+                                    FALSE
   )
   ) %>%
   mutate(sexED_young = if_else(str_detect(sexED_other, "year") |
-                                str_detect(sexED_other, "He is") |
+                                 str_detect(sexED_other, "He is") |
                                  str_detect(sexED_other, "He's") |
                                  str_detect(sexED_other, "old") |
                                  str_detect(sexED_other, "baby") &
-                                !is.na(str_detect(sexED_other, "year")) |
-                                !is.na(str_detect(sexED_other, "He is")) |
+                                 !is.na(str_detect(sexED_other, "year")) |
+                                 !is.na(str_detect(sexED_other, "He is")) |
                                  !is.na(str_detect(sexED_other, "He's")) |
                                  !is.na(str_detect(sexED_other, "old")) |
                                  !is.na(str_detect(sexED_other, "baby")),
-                              TRUE,
-                              FALSE)
+                               TRUE,
+                               FALSE)
   ) -> DSSurvey
 
 # Fix healthcare columns
@@ -648,40 +652,40 @@ DSSurvey %>%
          healthcare_group = 6 - healthcare_group,
          healthcare_PCP = 6 - healthcare_PCP) %>% 
   mutate(healthcare_clinic = if_else(is.na(healthcare_clinic),
-                 0,
-                 healthcare_clinic),
+                                     0,
+                                     healthcare_clinic),
          healthcare_respond = if_else(is.na(healthcare_respond),
-                                     0,
-                                     healthcare_respond),
+                                      0,
+                                      healthcare_respond),
          healthcare_DS = if_else(is.na(healthcare_DS),
-                                     0,
-                                     healthcare_DS),
+                                 0,
+                                 healthcare_DS),
          healthcare_group = if_else(is.na(healthcare_group),
-                                     0,
-                                     healthcare_group),
+                                    0,
+                                    healthcare_group),
          healthcare_PCP = if_else(is.na(healthcare_PCP),
-                                     0,
-                                     healthcare_PCP)) -> DSSurvey
+                                  0,
+                                  healthcare_PCP)) -> DSSurvey
 # Fix future columns
 DSSurvey %>%
   mutate(future_access = if_else(is.na(future_access),
-                                     0,
+                                 0,
                                  future_access),
          future_opps = if_else(is.na(future_opps),
-                                      0,
+                               0,
                                future_opps),
          future_housing = if_else(is.na(future_housing),
-                                 0,
-                                 future_housing),
+                                  0,
+                                  future_housing),
          future_employ = if_else(is.na(future_employ),
-                                    0,
+                                 0,
                                  future_employ),
          future_ALZ = if_else(is.na(future_ALZ),
-                                  0,
+                              0,
                               future_ALZ),
          future_woGuardian = if_else(is.na(future_woGuardian),
-                              0,
-                              future_woGuardian)) -> DSSurvey
+                                     0,
+                                     future_woGuardian)) -> DSSurvey
 
 # Living situation 2: No Change 
 DSSurvey %>% 
@@ -701,4 +705,302 @@ DSSurvey %>%
   mutate(mentaldiag = if_else(is.na(mentaldiag), FALSE, TRUE)) ->
   DSSurvey
 
+# cleans clinic
 
+DSSurvey %>% 
+  mutate(clinic = as.character(clinic)) %>% 
+  mutate(clinic2 = "") %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Boston") |
+                              str_detect(clinic, "Bch") |
+                              str_detect(clinic, "Childrens") |
+                              str_detect(clinic, "Children's")),
+                           "Boston Children's Hospital in Massachusetts",
+                           clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "MGH") |
+                              str_detect(clinic, "Mess") |
+                              str_detect(clinic, "MASS") |
+                              str_detect(clinic, "Mgh") |
+                              str_detect(clinic, "mass") |
+                              str_detect(clinic, "mgh") |
+                             str_detect(clinic, "Mass")),
+                          "Mass General Hospital",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Mass General and Boston Childrens")),
+                           "Boston Children's Hospital in Massachusetts",
+                           clinic2
+  )
+  ) %>% 
+  
+  mutate(clinic2 = if_else((str_detect(clinic, "T21") |
+                             str_detect(clinic, "Philadelphia")),
+                          "Trisomy 21 Program of Philidelphia, Pennsylvania",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Vanderbilt")),
+                          "Vanderbilt Children's Hospital in Nashville Tennessee",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Kennedy")),
+                          "Kennedy Kreiger Institute in Baltimore, Maryland",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Kluge")),
+                          "Kluge Children's Rehab Center in Charlottesville, Virginia",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Sunnybrook")),
+                          "Sunnybrook Hospital",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Eastern")),
+                          "Easten Pennsylvania Down Syndrome Clinic",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Valley Medical Center Dr Partridge")),
+                          "Valley Medical Center in Renton, Washington",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Children's hospital in Plano, TX")),
+                          "Children's Medical Center in Plano, Texas",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Orlando, Warner House")),
+                          "Warner House",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Jane & Richard Thomas Center in Cincinnati") |
+                             str_detect(clinic, "Thomas Center for Down Syndrome Cincinnati Children's")),
+                          "Jane and Richard Thomas Center in Cinncinatti, Ohio",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Issaquah")),
+                          "Virginia Mason Issaquah in Issaquah, Washington",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Kirsch")),
+                          "Kirsch Center in Rochester, New York",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Milwaukee")),
+                          "Milwaukee Children's Hospital in Wisconsin",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Linda")),
+                          "Linda Cirnic Center in Denver, Colorado",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Duke")),
+                          "Duke Down Syndrome Clinic in Durham, North Carolina",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Christiana")),
+                          "Christiana Hospital in Newark, Deleware",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Riley")),
+                          "Riley Hospital for Children in Indianapolis, Indiana",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Avera")),
+                          "Avera Children's Clinic in Souix Falls, South Dakota",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Stanford")),
+                          "Stanford Medical Center in Palo Alto, California",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Rhode")),
+                          "Child Neurodevelopment Center in Providence, Rhode Island",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Orleans")),
+                          "Children's Hospital in New Orleans, Louisiana",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "mercy")),
+                          "Children's Mercy in Kansas City, Missouri",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Crotched")),
+                          "Crotched Mountain Outpatient in Greenfield, New Hampshire",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Dallas")),
+                          "Children's Health Specialty Center in Dallas, Texas",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "SC")),
+                          "Medical University of South Carolina in Charleston, South Carolina",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Pittsburgh")),
+                          "Down Syndrome Clinic of Western Pennsylvania in Pittsburgh, Pennsylvania",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Judy")),
+                          "The Judy Center in Hackensack, New Jersey",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Texas")),
+                          "Texas Children's Hospital in Houston, Texas",
+                          clinic2
+  )
+  ) %>% 
+ 
+  mutate(clinic2 = if_else((str_detect(clinic, "Sie")),
+                          "Sie Center in Denver, Colorado",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Can't remember") |
+                              str_detect(clinic, "Waste") |
+                              str_detect(clinic, "Moved")),
+                           "",
+                           clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Nationwide")),
+                          "Nationwide Children's Hospital in Columbus, Ohio",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "florida") |
+                             str_detect(clinic, "Annual DSACF Clinic")),
+                          "Down Syndrome Association of Central Florida in Orlando, Florida",
+                          clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = if_else((str_detect(clinic, "Strong Developmental") |
+                            str_detect(clinic, "Golisano")),
+                           "Golisano Children's Hospital",
+                           clinic2
+  )
+  ) %>% 
+  mutate(clinic2 = as.factor(clinic2)) %>% 
+  mutate(clinic = clinic2) %>% 
+  select(-clinic2) ->
+  DSSurvey
+
+# cleans DSeducation
+
+DSSurvey %>% 
+  mutate(DSeducation = if_else(DSage < 13, 
+                               "Not completed middle school", 
+                               as.character(DSeducation))) %>% 
+  mutate(DSeducation = if_else((DSage == 13) & is.na(DSeducation),
+                                "Not completed middle school",
+                                as.character(DSeducation))) %>% 
+  mutate(as.factor(DSeducation)) ->
+  DSSurvey
+
+# adds 100+ option in clinicdistance
+DSSurvey %>% 
+  mutate(as.character(clinicdistance)) %>% 
+  mutate(as.character(traveltime)) %>% 
+  mutate(clinicdistance = if_else((is.na(clinicdistance) & traveltime == "Over 4 hours") |
+                                    (is.na(clinicdistance) & traveltime == "3-4 hours"),
+                                  "100 +",
+                                  as.character(clinicdistance))) %>% 
+  mutate(as.factor(traveltime)) %>% 
+  mutate(as.factor(clinicdistance)) ->
+  DSSurvey
+
+# clean diagnoses ranking
+
+DSSurvey %>% 
+  mutate(concern_ALZ = if_else(health_ALZ == "FALSE",
+         "",
+         as.character(concern_ALZ))) %>%
+  mutate(concern_celiac = if_else(health_celiac == "FALSE",
+                               "",
+                               as.character(concern_celiac))) %>%
+  mutate(concern_diabetes = if_else(health_diabetes == "FALSE",
+                               "",
+                               as.character(concern_diabetes))) %>%
+  mutate(concern_leuk = if_else(health_leuk == "FALSE",
+                               "",
+                               as.character(concern_leuk))) %>%
+  mutate(concern_lowiron = if_else(health_lowiron == "FALSE",
+                               "",
+                               as.character(concern_lowiron))) %>%
+  mutate(concern_apnea = if_else(health_apnea == "FALSE",
+                               "",
+                               as.character(concern_apnea))) %>%
+  mutate(concern_thyroid = if_else(health_thyroid == "FALSE",
+                               "",
+                               as.character(concern_thyroid))) %>%
+  mutate(concern_swallow = if_else(health_swallow == "FALSE",
+                               "",
+                               as.character(concern_swallow))) %>%
+  mutate(concern_hiBP = if_else(health_hiBP == "FALSE",
+                               "",
+                               as.character(concern_hiBP))) %>%
+  mutate(concern_other = if_else(!is.na(health2),
+                               "",
+                               as.character(concern_other))) %>%
+  mutate(concern_CHD = if_else(health_CHD == "FALSE",
+                               "",
+                               as.character(concern_CHD))) ->
+  DSSurvey
+
+
+
+
+
+DSSurvey %>% 
+  mutate(diagnoses_total = health_celiac + health_diabetes + health_leuk + 
+           health_apnea + health_lowiron + health_thyroid + health_swallow + 
+           health_ALZ + health_hiBP + health_CHD + ADHD + autism)   -> 
+DSSurvey
+
+DSSurvey %>%
+  mutate(mental_total = mentaldiag_anxiety + mentaldiag_bipolar + 
+                        mentaldiag_dep + mentaldiag_OCD + mentaldiag_schiz) ->
+DSSurvey
+
+DSSurvey %>%
+  mutate(regression_total = regress_attend + regress_cat + regress_dress + 
+                            regress_RW + regress_social + regress_selfcare) ->
+DSSurvey
+
+DSSurvey %>%
+  mutate(total_total = regress_attend + regress_cat + regress_dress + 
+                       regress_RW + regress_social + regress_selfcare + health_celiac + 
+                       health_diabetes + health_leuk + health_apnea + health_lowiron + 
+                       health_thyroid + health_swallow + health_ALZ + health_hiBP + 
+                       health_CHD + ADHD + autism) ->
+DSSurvey
+
+DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
+DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
