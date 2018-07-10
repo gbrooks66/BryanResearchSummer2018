@@ -256,6 +256,7 @@ summary(as.factor(DSSurvey$independent))
 DSSurvey %>% 
   ggplot(aes(x = mentaldiag, y = DSage)) +
   geom_boxplot()
+
 DSSurvey %>% 
   ggplot(aes(x = mentaldiag_OCD, y = DSage)) +
   geom_boxplot()
@@ -287,7 +288,73 @@ DSSurvey %>%
   ggplot(aes(x = autism, y = DSage)) +
   geom_boxplot()
 
-summary(DSSurvey$gender_respond)
+DSSurvey %>% 
+  ggplot(aes(x = insurance, y = DSage, color = health_CHD)) +
+  geom_point() +
+  facet_wrap(~DSvisit)
 
-summary(DSSurvey$mentaldiag_other)
-summary(DSSurvey$health2)
+DSSurvey %>% 
+  gather(key = "health", value = "DSage", matches("^health_") ) %>% 
+  ggplot(aes(x = DSage, y = DSvisit, color = DSvisit)) + 
+  geom_jitter() +
+  facet_wrap(~health)
+
+
+
+DSkid %>% 
+  ggplot(aes(x = health_ALZ, y = DSage)) + 
+  geom_boxplot() 
+  
+DSadult %>% 
+  ggplot(aes(x = health_ALZ, y = DSage)) + 
+  geom_boxplot() 
+
+
+
+DSkid %>% 
+  ggplot(aes(x = health_leuk, y = DSage)) + 
+  geom_boxplot() 
+
+DSadult %>% 
+  ggplot(aes(x = health_leuk, y = DSage)) + 
+  geom_boxplot() 
+
+DSurvey %>% 
+  ggplot(aes(x=health_leuk, color = insurance, fill = insurance)) + 
+  geom_bar(position="identity", stat = "count") 
+
+DSkid %>% 
+  ggplot(aes(x=health_leuk, color = insurance, fill = insurance)) + 
+  geom_bar(position="identity", stat = "count") 
+
+DSadult %>% 
+  ggplot(aes(x=health_leuk, color = insurance, fill = insurance)) + 
+  geom_bar(position="identity", stat = "count") 
+
+DSSurvey %>% 
+  ggplot(aes(x = insurance, y = DSage, color = insurance)) +
+  geom_boxplot()
+
+
+require(gridExtra)
+plot1 <-
+  DSkid %>% 
+  ggplot(aes(x = insurance, color = insurance, fill = insurance)) +
+  geom_histogram(stat = "count") +
+  coord_flip() +
+  ggtitle("Insurance counts for Individuals under 18")
+
+plot2 <- 
+  DSadult %>% 
+  ggplot(aes(x = insurance, color = insurance, fill = insurance)) +
+  geom_histogram(stat = "count", ylim = c(0,60)) +
+  coord_flip() +
+  ggtitle("Insurance counts for Individuals 18 and older")
+
+grid.arrange(plot1, plot2, ncol=2)
+
+DSSurvey %>% 
+  gather(key = "clinicr", value = "DSage", matches("^clinic_") ) %>% 
+  ggplot(aes(x = DSage, y = income, color = DSvisit)) + 
+  geom_jitter() +
+  facet_wrap(~clinicr)

@@ -484,6 +484,10 @@ DSSurvey %>%
                              insurance)
   ) %>% 
   mutate(insurance = as.factor(insurance)) %>% 
+  mutate(insurance = 
+           factor(insurance, 
+                  levels = c("None","Public", "Both",
+                             "Private"))) %>% 
   select(-insurance2) -> DSSurvey
 
 
@@ -961,3 +965,6 @@ DSSurvey %>%
                        health_thyroid + health_swallow + health_ALZ + health_hiBP + 
                        health_CHD + ADHD + autism) ->
 DSSurvey
+
+DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
+DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
