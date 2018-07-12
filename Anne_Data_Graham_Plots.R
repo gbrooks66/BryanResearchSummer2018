@@ -358,3 +358,6 @@ DSSurvey %>%
   ggplot(aes(x = DSage, y = income, color = DSvisit)) + 
   geom_jitter() +
   facet_wrap(~clinicr)
+
+dim(DSkid)
+dim(DSadult)
