@@ -360,76 +360,6 @@ DSSurvey %>%
            health_apnea + health_lowiron + health_thyroid + health_swallow + 
            health_ALZ + health_hiBP + health_CHD)   -> DSSurvey
 
-# factor variables where levels need to be ordered
-DSSurvey %>%
-  mutate(DSeducation = 
-           factor(DSeducation,
-                  levels = c("Completed middle school", 
-                             "Some high school", 
-                             "Graduated high school with certificate of completion", 
-                             "Graduated high school with a high school diploma", 
-                             "Some job training", 
-                             "Completed a job training program", 
-                             "Some college", 
-                             "Completed a college program"))) %>%
-  mutate(ed_respond = 
-           factor(ed_respond,
-                  levels = c("Completed high school", "Completed some college", 
-                             "Associate's degree", "Bachelor's degree", 
-                             "Completed some post-graduate", "Master's degree", 
-                             "Other advanced degree beyond a Master's degree",
-                             "Ph.D., law, or medical degree"))) %>%
-  mutate(DSvisit = 
-           factor(DSvisit, 
-                  levels = c("No", "Yes; once", 
-                             "Yes; yearly or more"))) %>%
-  mutate(clinicdistance = 
-           factor(clinicdistance,
-                  levels = c("0-20 miles", "20-40 miles", 
-                             "40-60 miles", "60-80 miles", 
-                             "80-100 miles")))  %>% 
-  mutate(income = 
-           factor(income,
-                  levels = c("Less than $10,000", "$10,000-25,000", 
-                             "$25,000-35,000", "$35,000-50,000", 
-                             "$50,000-75,000", "$75,000-100,000", 
-                             "$100,000-150,000", "$150,000 or more" ))) %>% 
-  mutate(visitstotal = 
-           factor(visitstotal,
-                  levels = c("0-2", "3-5", 
-                             "6-8", "9-11", 
-                             "12 and over"))) %>% 
-  mutate(visitsplanned = 
-           factor(visitsplanned, 
-                  levels = c("0-2", "3-5", 
-                             "6-8", "9-11", 
-                             "12 and over"))) %>% 
-  mutate(visitsunplanned = 
-           factor(visitsunplanned, 
-                  levels = c("0-2", "3-5", 
-                             "6-8", "9-11", 
-                             "12 and over"))) %>% 
-  mutate(visitsemergency = 
-           factor(visitsemergency, 
-                  levels = c("0-2", "3-5", 
-                             "6-8", "9-11", 
-                             "12 and over"))) %>% 
-  mutate(traveltime = 
-           factor(traveltime, 
-                  levels = c("0-1 hours", "1-2 hours", 
-                             "2-3 hours", "3-4 hours", 
-                             "Over 4 hours"))) %>%
-  mutate(mental_will_now = 
-           factor(mental_will_now, 
-                  levels = c("Definitely not", "Not sure", 
-                             "Probably", "Definitely"))) %>%
-  mutate(mental_will_future = 
-           factor(mental_will_future,
-                  levels = c("Definitely not", "Probably not", 
-                             "Not sure", "Probably", 
-                             "Definitely"))) ->
-  DSSurvey
-
 # clean up the state column
 # first, create a tibble with state names, abbrevs,
 # and other locations (DC, ON, India) and nonstandard names
@@ -924,7 +854,7 @@ DSSurvey %>%
   mutate(as.factor(DSeducation)) ->
   DSSurvey
 
-# adds 100+ option in clinicdistance
+# adds 100 + option in clinicdistance
 
 DSSurvey %>% 
   mutate(as.character(clinicdistance)) %>% 
@@ -1045,6 +975,78 @@ DSSurvey$concern_CHDsc = concerndfsc$concern_CHD
 DSSurvey$concern_othersc = concerndfsc$concern_other
 
 # View(DSSurvey[148:158])
+
+
+# factor variables where levels need to be ordered
+DSSurvey %>%
+  mutate(DSeducation = 
+           factor(DSeducation,
+                  levels = c("Not completed middle school", 
+                             "Completed middle school", 
+                             "Some high school", 
+                             "Graduated high school with certificate of completion", 
+                             "Graduated high school with a high school diploma", 
+                             "Some job training", 
+                             "Completed a job training program", 
+                             "Some college", 
+                             "Completed a college program"))) %>%
+  mutate(ed_respond = 
+           factor(ed_respond,
+                  levels = c("Completed high school", "Completed some college", 
+                             "Associate's degree", "Bachelor's degree", 
+                             "Completed some post-graduate", "Master's degree", 
+                             "Other advanced degree beyond a Master's degree",
+                             "Ph.D., law, or medical degree"))) %>%
+  mutate(DSvisit = 
+           factor(DSvisit, 
+                  levels = c("No", "Yes; once", 
+                             "Yes; yearly or more"))) %>%
+  mutate(clinicdistance = 
+           factor(clinicdistance,
+                  levels = c("0-20 miles", "20-40 miles", 
+                             "40-60 miles", "60-80 miles", 
+                             "80-100 miles", "100 +")))  %>% 
+  mutate(income = 
+           factor(income,
+                  levels = c("Less than $10,000", "$10,000-25,000", 
+                             "$25,000-35,000", "$35,000-50,000", 
+                             "$50,000-75,000", "$75,000-100,000", 
+                             "$100,000-150,000", "$150,000 or more" ))) %>% 
+  mutate(visitstotal = 
+           factor(visitstotal,
+                  levels = c("0-2", "3-5", 
+                             "6-8", "9-11", 
+                             "12 and over"))) %>% 
+  mutate(visitsplanned = 
+           factor(visitsplanned, 
+                  levels = c("0-2", "3-5", 
+                             "6-8", "9-11", 
+                             "12 and over"))) %>% 
+  mutate(visitsunplanned = 
+           factor(visitsunplanned, 
+                  levels = c("0-2", "3-5", 
+                             "6-8", "9-11", 
+                             "12 and over"))) %>% 
+  mutate(visitsemergency = 
+           factor(visitsemergency, 
+                  levels = c("0-2", "3-5", 
+                             "6-8", "9-11", 
+                             "12 and over"))) %>% 
+  mutate(traveltime = 
+           factor(traveltime, 
+                  levels = c("0-1 hours", "1-2 hours", 
+                             "2-3 hours", "3-4 hours", 
+                             "Over 4 hours"))) %>%
+  mutate(mental_will_now = 
+           factor(mental_will_now, 
+                  levels = c("Definitely not", "Not sure", 
+                             "Probably", "Definitely"))) %>%
+  mutate(mental_will_future = 
+           factor(mental_will_future,
+                  levels = c("Definitely not", "Probably not", 
+                             "Not sure", "Probably", 
+                             "Definitely"))) ->
+  DSSurvey
 
 
 DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
