@@ -4,18 +4,30 @@ DSSurvey %>%
   
   ggplot(aes(x = regress_cat, y = DSage, color = health_ALZ)) +
   geom_point(na.rm = TRUE, size = 1) +
-  
   ggtitle('Catatonia vs alzheimers vs age')
+
+#redo
+
+
+DSSurvey %>% 
+  ggplot(aes(x=regress_cat, y=DSage)) +
+  geom_boxplot() + 
+  geom_dotplot(binaxis='y', stackdir='center', dotsize=.5, fill = "red")
+  
+
+DSSurvey %>% 
+  geom_boxplot(x = regress_cat, y = DSage) +
+  geom_dotplot(x = regress_cat, y = DSage, color = health_ALZ)
 
 # Catatonia vs alzheimers vs age
 DSSurvey %>% 
   
   ggplot(aes(x = regress_cat, y = DSage)) +
   geom_jitter()
-
-ggtitle('Catatonia vs age')
-
-
+  
+  ggtitle('Catatonia vs age')
+  
+  
 # diagnoses vs clinic visits
 
 DSSurvey %>% 
@@ -100,3 +112,81 @@ DSSurvey %>%
   filter(!is.na(as.factor(clinic))) %>%
   ggplot(aes(x = clinicdistance, y = clinic)) +
   geom_jitter()
+
+
+# apnea vs. therapies
+DSSurvey %>%
+  filter(!is.na(therapy_PT)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_PT)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>%
+  filter(!is.na(therapy_OT)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_OT)) +
+  geom_point() +
+  geom_count()
+
+# dig
+DSSurvey %>%
+  filter(!is.na(therapy_speech)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_speech)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>%
+  filter(!is.na(therapy_music)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_music)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>%
+  filter(!is.na(therapy_equine)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_equine)) +
+  geom_point() +
+  geom_count()
+
+#like - more dig
+# dseducation vs. apnea
+DSSurvey %>% 
+  filter(!is.na(DSeducation)) %>% 
+  ggplot(aes(x=health_apnea, y=DSeducation)) +
+  geom_point() +
+  geom_count()
+
+# different representation
+# mental vs. apnea
+
+# good
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_anxiety)) +
+  geom_point() +
+  geom_count()
+
+# good
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_OCD)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_dep)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_bipolar)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_schiz)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag)) +
+  geom_point() +
+  geom_count()
+
+

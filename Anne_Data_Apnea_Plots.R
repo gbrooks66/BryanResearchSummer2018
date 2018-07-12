@@ -141,3 +141,13 @@ DSSurvey %>%
   facet_wrap(~health_apnea) +
   xlab("Signs of Regression") +
   ggtitle("High Blood Pressure vs. Sleep apnea")
+
+DSSurvey %>%
+  filter(!is.na(therapy_feeding)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_feeding)) +
+  geom_jitter()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=concern))
+
+
