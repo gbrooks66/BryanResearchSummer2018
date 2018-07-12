@@ -12,10 +12,10 @@ DSSurvey %>%
   
   ggplot(aes(x = regress_cat, y = DSage)) +
   geom_jitter()
-  
-  ggtitle('Catatonia vs age')
-  
-  
+
+ggtitle('Catatonia vs age')
+
+
 # diagnoses vs clinic visits
 
 DSSurvey %>% 
