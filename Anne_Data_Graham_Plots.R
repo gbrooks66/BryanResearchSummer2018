@@ -72,7 +72,7 @@ DSSurvey %>%
 
 
 # Clinic Distance vs Frequency of Clinic Visits against income
-
+#STAHR
 DSSurvey %>% 
   filter(!is.na(clinicdistance)) %>%
   ggplot(aes(x = DSvisit, y = clinicdistance, color = DSage)) +
@@ -88,16 +88,15 @@ DSSurvey %>%
   summarize(n = n()) %>%
   filter(!is.na(clinicdistance)) %>%
   ggplot(aes(x = clinicdistance, y = DSvisit, color = n)) +
-  geom_jitter() +
-  geom_smooth(aes(x = as.numeric(clinicdistance), y = as.numeric(DSvisit), weight = n)) +
+  geom_point() +
   ggtitle('Distance from Clinic vs Frequency of Visits') 
 
 #DS Education vs Frequency of Clinic Visits
 
+#STAHR
 DSSurvey %>% 
   #filter(!is.na(DSeducation)) %>% 
   ggplot(aes(x = DSage, y = DSeducation, color =  DSvisit)) +
-  geom_point(na.rm = TRUE) +
   geom_jitter() +
   ggtitle('DSeducation vs DSvisit')
 
@@ -120,7 +119,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress') 
 
 DSSurvey %>%
@@ -128,7 +126,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_cat)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (CAT)') 
 
 DSSurvey %>%
@@ -136,7 +133,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_dress)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (DRESS)') 
 
 DSSurvey %>%
@@ -144,7 +140,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_attend)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (ATTEND)') 
 
 DSSurvey %>%
@@ -152,7 +147,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_RW)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (RW)') 
 
 DSSurvey %>%
@@ -160,7 +154,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_social)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (SOCIAL)') 
 
 DSSurvey %>%
@@ -168,7 +161,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_dress)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (DRESS)') 
 
 DSSurvey %>%
@@ -176,7 +168,6 @@ DSSurvey %>%
   filter(!is.na(gender_DS)) %>%
   ggplot(aes(x = gender_DS, y = DSage, color = regress_selfcare)) +
   geom_point(na.rm = TRUE, size = 1) +
-  geom_jitter() +
   ggtitle('gender vs age vs. did they regress (SELFCARE)')
 
 # Boxplot age vs did they regress vs Sleep
@@ -191,7 +182,7 @@ DSSurvey %>%
 
 # Age vs Income vs ed respond vs firstnotified
 # Important relationship 1
-
+#STAHR add income facet wrap
 DSSurvey %>% 
   mutate(firstnotified = factor(firstnotified, levels = c("Ultrasound","Non-invasive prenatal testing such as Materniti21", "Amniocentesis", "Chorionic villus sampling (CVS)",
                                   "Post-natal; immediately after birth", "Post-natal; a day or more after birth", "NA"))) %>% 
@@ -202,6 +193,7 @@ DSSurvey %>%
   ggtitle("Age of Individual vs How the Parents were First Notified ")
 
 # other tests
+
 
 # switch to bar
 DSSurvey %>% 
@@ -288,11 +280,13 @@ DSSurvey %>%
   ggplot(aes(x = autism, y = DSage)) +
   geom_boxplot()
 
+#STAHR - Take out insurance
 DSSurvey %>% 
   ggplot(aes(x = insurance, y = DSage, color = health_CHD)) +
   geom_point() +
   facet_wrap(~DSvisit)
 
+#STAHR - clean up
 DSSurvey %>% 
   gather(key = "health", value = "DSage", matches("^health_") ) %>% 
   ggplot(aes(x = DSage, y = DSvisit, color = DSvisit)) + 
@@ -319,7 +313,7 @@ DSadult %>%
   ggplot(aes(x = health_leuk, y = DSage)) + 
   geom_boxplot() 
 
-DSurvey %>% 
+DSSurvey %>% 
   ggplot(aes(x=health_leuk, color = insurance, fill = insurance)) + 
   geom_bar(position="identity", stat = "count") 
 
@@ -353,8 +347,13 @@ plot2 <-
 
 grid.arrange(plot1, plot2, ncol=2)
 
+#STAHR - take out income, simplify
 DSSurvey %>% 
   gather(key = "clinicr", value = "DSage", matches("^clinic_") ) %>% 
   ggplot(aes(x = DSage, y = income, color = DSvisit)) + 
   geom_jitter() +
   facet_wrap(~clinicr)
+
+dim(DSkid)
+dim(DSadult)
+levels(DSSurvey$clinic)
