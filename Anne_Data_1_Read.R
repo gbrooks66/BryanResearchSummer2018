@@ -1,6 +1,7 @@
 ## Load in packages needed
 require(tidyverse)
 require(readxl)
+require(scales)
 
 
 # Read in the raw data not using the row names
