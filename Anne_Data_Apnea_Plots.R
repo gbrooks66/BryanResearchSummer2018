@@ -1,28 +1,3 @@
-# Anne Data Apnea Plots
-
-# Regression vs. Sleep Apnea
-DSSurvey %>%
-  filter(!is.na(regress)) %>%
-  ggplot(aes(x=as.factor(regress), y=DSage)) +
-  geom_boxplot(fill="blue", alpha=0.2) + 
-  facet_wrap(~health_apnea) +
-  xlab("Signs of Regression") +
-  ggtitle('Regression vs. Sleep apnea')
-
-# Plus dots
-DSSurvey %>%
-  filter(!is.na(regress)) %>%
-  ggplot(aes(x=as.factor(regress), y=DSage)) +
-  geom_boxplot(fill="green", alpha=0.2) + 
-  geom_dotplot(binaxis='y', 
-               stackdir='center', 
-               dotsize = .5) +
-  facet_wrap(~health_apnea) +
-  xlab("Signs of Regression") +
-  ggtitle('Regression vs. Sleep apnea')
-
-
-# Clinic visits vs Apnea vs age
 DSSurvey %>%
   filter(!is.na(regress)) %>% 
   ggplot(aes(x = DSvisit, y = DSage, color = regress)) +
@@ -30,7 +5,46 @@ DSSurvey %>%
   facet_wrap(~health_apnea) +
   ggtitle('Regression vs. Clinic visits vs. Sleep apnea') 
 
-#HIST would be better
+DSSurvey %>%
+  filter(!is.na(regress)) %>%
+  ggplot(aes(x=as.factor(regress), y=DSage)) +
+  geom_boxplot(fill="yellow", alpha=0.2) + 
+  facet_wrap(~health_apnea) +
+  xlab("Signs of Regression") +
+  ggtitle('Regression vs. Sleep apnea')
+
+DSSurvey %>%
+  filter(!is.na(income)) %>%
+  ggplot(aes(x = insurance, y = income)) +
+  geom_dotplot(binaxis='y', 
+               stackdir='center', 
+               dotsize = .5) +
+  facet_wrap(~health_apnea) +
+  ggtitle('Income vs. Insurance vs. Sleep apnea') 
+
+#Interesting
+ggplot(DSSurvey, aes(x=as.factor(health_apnea), fill=as.factor(visitstotal) )) +
+  geom_bar( ) +
+  ggtitle('Hospitalizations vs. Sleep apnea')
+
+ggplot(DSSurvey, aes(x=as.factor(health_apnea), fill=as.factor(visitstotal) )) +
+  geom_bar(position = "fill") +
+  ggtitle('Hospitalizations vs. Sleep apnea')
+
+tab_apneavhospitalizations = with(DSSurvey, table(health_apnea, visitstotal))
+round(tab_apneavhospitalizations/sum(tab_apneavhospitalizations), 3)
+
+ggplot(DSSurvey, aes(x=as.factor(health_apnea), fill=as.factor(concern_apneasc) )) +
+  geom_bar( ) +
+  ggtitle('Concern of Sleep apnea vs. Sleep apnea')
+
+
+DSSurvey %>%
+  filter(!is.na(income)) %>%
+  ggplot(aes(x=as.factor(income), fill=as.factor(health_apnea) )) +
+  geom_bar( ) +
+  ggtitle('Income vs. Sleep apnea')
+
 DSSurvey %>%
   ggplot(aes(x=DSvisit, y=DSage)) +
   geom_boxplot(fill="blue", alpha=0.2) + 
@@ -43,7 +57,6 @@ DSSurvey %>%
 
 
 # Sleep Apnea vs other Health Diagnoses
-#HIST would be better
 DSSurvey %>%
   ggplot(aes(x=health_ALZ, y=DSage)) +
   geom_boxplot(fill="blue", alpha=0.2) + 
@@ -144,91 +157,77 @@ DSSurvey %>%
   xlab("Signs of Regression") +
   ggtitle("High Blood Pressure vs. Sleep apnea")
 
-DSSurvey %>%
-  ggplot(aes(x=health_apnea, y=income)) +
-  geom_dotplot(binaxis='y', 
-               stackdir='center', 
-               dotsize = .5) +
-  xlab("Sleep Apnea") +
-  ggtitle("income vs. Sleep apnea")
+
+# different representation
+# mental vs. apnea
+
+# good
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_anxiety)) +
+  geom_point() +
+  geom_count()
+
+# Sleep apnea vs. Anxiety table
+with(DSSurvey, table(health_apnea, mentaldiag_anxiety))
+
+# Sleep apnea vs. Anxiety proportions
+tab_apneavanxiety = with(DSSurvey, table(health_apnea, mentaldiag_anxiety))
+round(tab_apneavanxiety/sum(tab_apneavanxiety), 3)
+
+# Sleep apnea vs. Anxiety Bar plot 
+ggplot(DSSurvey, aes(x = health_apnea, fill = mentaldiag_anxiety)) + 
+  geom_bar()
+
+# Sleep apnea vs. Anxiety proportion bar plot
+ggplot(DSSurvey, aes(x = health_apnea, fill = mentaldiag_anxiety)) + 
+  geom_bar(position = "fill") +
+  ggtitle("Proportional Sleep apnea vs. Anxiety")
+
+# good
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_OCD)) +
+  geom_point() +
+  geom_count()
+
+# Sleep apnea vs. OCD table
+with(DSSurvey, table(health_apnea, mentaldiag_OCD))
+
+# Sleep apnea vs. OCD proportions
+tab_apneavocd = with(DSSurvey, table(health_apnea, mentaldiag_OCD))
+round(tab_apneavocd/sum(tab_apneavocd), 3)
+
+# Sleep apnea vs. OCD Bar plot 
+ggplot(DSSurvey, aes(x = health_apnea, fill = mentaldiag_OCD)) + 
+  geom_bar()
+
+# Sleep apnea vs. OCD proportion bar plot
+ggplot(DSSurvey, aes(x = health_apnea, fill = mentaldiag_OCD)) + 
+  geom_bar(position = "fill")
+
+#Sleep apnea appears to have no negative affect from here on down
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_dep)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_bipolar)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag_schiz)) +
+  geom_point() +
+  geom_count()
+
+DSSurvey %>% 
+  ggplot(aes(x=health_apnea, y=mentaldiag)) +
+  geom_point() +
+  geom_count()
+
 
   
-DSSurvey %>%
-  filter(health_apnea != FALSE) %>% 
-  ggplot(aes(x=concern_apneasc)) +
-  geom_bar() +
-  facet_wrap(~health_apnea)+
-  ggtitle("Sleep apnea vs concern level: n = 77") 
 
 
 
-DSSurvey %>%
-  filter(health_apnea != FALSE) %>% 
-  ggplot(aes(x=concern_apneasc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_apnea)
-
-DSSurvey %>%
-  filter(health_celiac != FALSE) %>% 
-  ggplot(aes(x=concern_celiacsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_celiac)
-
-DSSurvey %>%
-  filter(health_diabetes != FALSE) %>% 
-  ggplot(aes(x=concern_diabetessc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_diabetes)
-
-DSSurvey %>%
-  filter(health_leuk != FALSE) %>% 
-  ggplot(aes(x=concern_leuksc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_leuk)
-
-DSSurvey %>%
-  filter(health_lowiron != FALSE) %>% 
-  ggplot(aes(x=concern_lowironsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_lowiron)
-
-DSSurvey %>%
-  filter(health_thyroid != FALSE) %>% 
-  ggplot(aes(x=concern_thyroidsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_thyroid)
-
-DSSurvey %>%
-  filter(health_swallow != FALSE) %>% 
-  ggplot(aes(x=concern_swallowsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_swallow)
-
-DSSurvey %>%
-  filter(health_ALZ != FALSE) %>% 
-  ggplot(aes(x=concern_ALZsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_ALZ)
-
-DSSurvey %>%
-  filter(health_hiBP != FALSE) %>% 
-  ggplot(aes(x=concern_hiBPsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_hiBP)
-
-DSSurvey %>%
-  filter(health_CHD != FALSE) %>% 
-  ggplot(aes(x=concern_CHDsc)) +
-  geom_freqpoly() +
-  facet_wrap(~health_CHD)
-
-
-
-
-DSSurvey %>%
-  filter(health_apnea != FALSE) %>% 
-  gather(key = "concernssc", value = "DSAge", ends_with("sc")) %>% 
-  ggplot(aes(x = diagnoses_total, color = concernssc)) +
-  geom_freqpoly(stat = "count") +
-  facet_wrap(~health_apnea)
 
