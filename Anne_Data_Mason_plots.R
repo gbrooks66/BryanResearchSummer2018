@@ -115,12 +115,14 @@ DSSurvey %>%
 
 
 # apnea vs. therapies
+# PT
 DSSurvey %>%
   filter(!is.na(therapy_PT)) %>%
   ggplot(aes(x=health_apnea, y=therapy_PT)) +
   geom_point() +
   geom_count()
 
+# OT
 DSSurvey %>%
   filter(!is.na(therapy_OT)) %>%
   ggplot(aes(x=health_apnea, y=therapy_OT)) +
@@ -128,18 +130,41 @@ DSSurvey %>%
   geom_count()
 
 # dig
+# speech
 DSSurvey %>%
   filter(!is.na(therapy_speech)) %>%
   ggplot(aes(x=health_apnea, y=therapy_speech)) +
   geom_point() +
   geom_count()
 
+DSSurvey %>% 
+  ggplot(aes(health_apnea, ..count../sum(..count..))) +
+  geom_bar(aes(fill=therapy_speech), position="dodge") +
+  labs(x = "sleep apnea",
+       y = "percent of sleep therapy")
+
+# feeding
+DSSurvey %>%
+  filter(!is.na(therapy_feeding)) %>%
+  ggplot(aes(x=health_apnea, y=therapy_feeding)) +
+  geom_jitter()
+
+DSSurvey %>% 
+  filter(!is.na(therapy_feeding)) %>%
+  ggplot(aes(health_apnea, ..count../sum(..count..))) +
+  geom_bar(aes(fill=therapy_feeding), position="dodge") +
+  labs(x = "Sleep Apnea",
+       y= "Count",
+       title= "Feeding Therapy vs. Sleep Apnea")
+
+# music
 DSSurvey %>%
   filter(!is.na(therapy_music)) %>%
   ggplot(aes(x=health_apnea, y=therapy_music)) +
   geom_point() +
   geom_count()
 
+# equine
 DSSurvey %>%
   filter(!is.na(therapy_equine)) %>%
   ggplot(aes(x=health_apnea, y=therapy_equine)) +
@@ -153,6 +178,29 @@ DSSurvey %>%
   ggplot(aes(x=health_apnea, y=DSeducation)) +
   geom_point() +
   geom_count()
+
+DSadult %>% 
+  # filter(health_apnea == TRUE) %>% 
+  filter(!is.na(DSeducation)) %>% 
+  ggplot(aes(health_apnea, ..count..)) +
+  geom_bar(aes(fill=DSeducation), position="fill") +
+  theme(axis.text.x = element_text(angle=65, vjust=0.6)) +
+  labs(x="Sleep Apnea",
+       y="Percent",
+       title="Sleep Apnea vs. Education level")
+
+DSadult %>% 
+  # filter(health_apnea == TRUE) %>% 
+  filter(!is.na(DSeducation)) %>% 
+  ggplot(aes(DSeducation, ..count..)) +
+  geom_bar(aes(fill=health_apnea), position="dodge") +
+  theme(axis.text.x = element_text(angle=65, vjust=0.6)) +
+  labs(x="Sleep Apnea",
+       y="Count",
+       title="Sleep Apnea vs. Education level of Adults")
+
+DSSurvey %>% 
+  
 
 # different representation
 # mental vs. apnea
