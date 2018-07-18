@@ -1048,7 +1048,36 @@ DSSurvey %>%
                              "Definitely"))) ->
   DSSurvey
 
+DSSurvey$health_apnea2 <- as.factor(DSSurvey$health_apnea)
+
+DSSurvey$health_apnea2 <- plyr::revalue(DSSurvey$health_apnea2, c("FALSE"="Individuals without Sleep Apnea",
+                                                            "TRUE"="Individuals with Sleep Apnea")) 
+
+DSSurvey$DSeducation2 <- DSSurvey$DSeducation
+DSSurvey %>% 
+         mutate(DSeducation2 = if_else((str_detect(DSeducation, "Completed middle school") | 
+                                         str_detect(DSeducation, "Not completed middle school")),
+                                       "No High School", as.character(DSeducation2))) %>% 
+         mutate(DSeducation2 = if_else((str_detect(DSeducation,"Some high school") | 
+                                          str_detect(DSeducation, "Graduated high school with certificate of completion") |
+                                          str_detect(DSeducation, "Graduated high school with a high school diploma")),
+                                       "High School", as.character(DSeducation2))) %>%
+         mutate(DSeducation2 = if_else((str_detect(DSeducation, "Some job training") | 
+                                          str_detect(DSeducation, "Completed a job training program")),
+                                       "Job Training", as.character(DSeducation2))) %>%
+         mutate(DSeducation2 = if_else((str_detect(DSeducation, "Some college") |
+                                          str_detect(DSeducation, "Completed a college program")),
+                                       "College", as.character(DSeducation2))) ->
+DSSurvey
+
+DSSurvey %>% 
+  mutate(DSeducation2 = 
+           factor(DSeducation2,
+                  levels = c("No High School", "High School", 
+                             "Job Training", "College"))) ->
+  DSSurvey
 
 DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
 DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
+
 
