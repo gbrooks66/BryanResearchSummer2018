@@ -1,3 +1,16 @@
+DSSurvey %>% 
+  filter(DSSurvey$regress == "Yes") ->
+  DSregress
+
+DSapneay <- subset(DSregress, DSregress$health_apnea2 == "Individuals with Sleep Apnea")
+DSapnean <- subset(DSregress, DSregress$health_apnea2 == "Individuals without Sleep Apnea")
+
+dim(DSapneay)
+dim(DSapnean)
+
+t.test(DSapneay$DSage, DSapnean$DSage, mu = mean(DSapnean$DSage) - mean(DSapneay$DSage))
+
+
 # X-squared = 2.8836, df = 1, p-value = .08948
 table(DSSurvey$mentaldiag_OCD, DSSurvey$health_apnea)             
 chisq.test(DSSurvey$mentaldiag_OCD, DSSurvey$health_apnea, correct=FALSE)

@@ -17,16 +17,16 @@ DSSurvey %>%
 
 DSadult %>% 
   # filter(health_apnea == TRUE) %>% 
-  filter(!is.na(DSeducation)) %>% 
+  filter(!is.na(DSeducation2)) %>% 
   ggplot(aes(health_apnea2, ..count..)) +
-  geom_bar(aes(fill=DSeducation)) +
+  geom_bar(aes(fill=DSeducation2)) +
   labs(x="n = 18                                      n = 17",
        y="Count",
        fill="Education of the Individual with Down Syndrome",
        title="How Sleep Apnea Affects the Education Level of Individuals with Down Syndrome")
 
 DSadult %>% 
-  select(health_apnea2, DSeducation) %>% 
+  select(health_apnea2, DSeducation2) %>% 
   table()
 
 #table(DSSurvey$health_apnea2, DSSurvey$mentaldiag_OCD)
