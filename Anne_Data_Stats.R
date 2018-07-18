@@ -5,8 +5,6 @@ DSSurvey %>%
 DSapneay <- subset(DSregress, DSregress$health_apnea2 == "Individuals with Sleep Apnea")
 DSapnean <- subset(DSregress, DSregress$health_apnea2 == "Individuals without Sleep Apnea")
 
-dim(DSapneay)
-dim(DSapnean)
 
 t.test(DSapneay$DSage, DSapnean$DSage, mu = mean(DSapnean$DSage) - mean(DSapneay$DSage))
 
@@ -24,5 +22,5 @@ table(DSSurvey$visitstotal, DSSurvey$health_apnea)
 chisq.test(DSSurvey$visitstotal, DSSurvey$health_apnea, correct=FALSE)
 
 # X-squared = 7.8223, df = 6, p-value = .2514
-table(DSadult$DSeducation, DSadult$health_apnea)             
-chisq.test(DSadult$DSeducation, DSadult$health_apnea, correct=FALSE)
+table(DSadult$DSeducation2, DSadult$health_apnea2)             
+chisq.test(DSadult$DSeducation2, DSadult$health_apnea2, correct=FALSE)
