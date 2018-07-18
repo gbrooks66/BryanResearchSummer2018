@@ -41,29 +41,46 @@ ClinicData %>%
   ClinicData
 
 # convert score columns to numeric
- 
+
 numeric_cols <- c("score_hours",
-                    "score_DSspecific",
-                    "score_ages",
-                    "score_PT",
-                    "score_OT",
-                    "score_feed",
-                    "score_nurse_practitioner",
-                    "score_behavioral",
-                    "score_psycologist",
-                    "score_dietician",
-                    "score_developmental",
-                    "score_apraxia",
-                    "score_audiologist",
-                    "score_social_worker",
-                    "score_education",
-                    "score_geneticist",
-                    "score_genetic_counselor"
-  )
+                  "score_DSspecific",
+                  "score_ages",
+                  "score_PT",
+                  "score_OT",
+                  "score_feed",
+                  "score_speech",
+                  "score_nurse_practitioner",
+                  "score_behavioral",
+                  "score_psycologist",
+                  "score_dietician",
+                  "score_developmental",
+                  "score_apraxia",
+                  "score_audiologist",
+                  "score_social_worker",
+                  "score_education",
+                  "score_geneticist",
+                  "score_genetic_counselor"
+)
 
 ClinicData %>% 
   mutate_at(numeric_cols, as.numeric) ->
   ClinicData
 
+ClinicData %>% 
+  select(-score_nurse_practitioner) ->
+  ClinicData
 
-View(ClinicData)
+score.df <- subset(ClinicData[,c(4,5,8,14:27)])
+
+score.df %>% 
+  mutate_all(funs(replace(., is.na(.), 0))) ->
+  score.df
+
+View(score.df)
+
+
+ClinicData$score_total <- rowSums(score.df)
+ClinicData %>% 
+  select(name, score_total, state) %>% 
+  View()
+

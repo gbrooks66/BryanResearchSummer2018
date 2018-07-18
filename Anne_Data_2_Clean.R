@@ -1048,7 +1048,23 @@ DSSurvey %>%
                              "Definitely"))) ->
   DSSurvey
 
+DSSurvey$health_apnea2 <- as.factor(DSSurvey$health_apnea)
+
+DSSurvey$health_apnea2 <- plyr::revalue(DSSurvey$health_apnea2, c("FALSE"="Individuals without Sleep Apnea",
+                                                            "TRUE"="Individuals with Sleep Apnea")) 
+
+DSSurvey$DSeducation2 <- plyr::revalue(DSSurvey$DSeducation, c("Completed middle school"&"Not completed middle school" = "No High School",
+                                                               "Some high school" &
+                                                               "Graduated high school with certificate of completion" &
+                                                               "Graduated high school with a high school diploma" ="High School", 
+                                                               "Some job training" & "Completed a job training program" = "Job Training", 
+                                                               "Some college" & "Completed a college program" = "College"))
+                                  
+
+
+
 
 DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
 DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
+
 
