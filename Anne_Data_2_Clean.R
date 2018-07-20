@@ -893,6 +893,15 @@ DSSurvey %>%
            health_CHD + ADHD + autism) ->
   DSSurvey
 
+DSSurvey %>%
+  mutate(disint_total = mentaldiag_dep + health_apnea + mentaldiag_anxiety) ->
+  DSSurvey
+
+DSSurvey %>% 
+  mutate(disint_total = if_else(disint_total > 0,
+                               1,
+                               0)) ->
+  DSSurvey
 
 
 # clean diagnoses ranking
@@ -1077,7 +1086,14 @@ DSSurvey %>%
                              "Job Training", "College"))) ->
   DSSurvey
 
+DSSurvey$regress2 <- DSSurvey$regress
+DSSurvey$regress2 <- factor(DSSurvey$regress2, levels = c("No", "Yes"))
+
 DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
-DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
+DSadult <- subset(DSSurvey, DSSurvey$DSage > 17) 
+DSdisint <- subset(DSSurvey, DSSurvey$DSage >= 10 & DSSurvey$DSage <= 35)
+DSdisintk <- subset(DSSurvey, DSSurvey$DSage >= 10 & DSSurvey$DSage <= 18)
+DSdisintad <- subset(DSSurvey, DSSurvey$DSage >= 18 & DSSurvey$DSage <= 35)
+
 
 
