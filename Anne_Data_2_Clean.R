@@ -1060,24 +1060,24 @@ DSSurvey %>%
 DSSurvey$health_apnea2 <- as.factor(DSSurvey$health_apnea)
 
 DSSurvey$health_apnea2 <- plyr::revalue(DSSurvey$health_apnea2, c("FALSE"="Individuals without Sleep Apnea",
-                                                            "TRUE"="Individuals with Sleep Apnea")) 
+                                                                  "TRUE"="Individuals with Sleep Apnea")) 
 
 DSSurvey$DSeducation2 <- DSSurvey$DSeducation
 DSSurvey %>% 
-         mutate(DSeducation2 = if_else((str_detect(DSeducation, "Completed middle school") | 
-                                         str_detect(DSeducation, "Not completed middle school")),
-                                       "No High School", as.character(DSeducation2))) %>% 
-         mutate(DSeducation2 = if_else((str_detect(DSeducation,"Some high school") | 
-                                          str_detect(DSeducation, "Graduated high school with certificate of completion") |
-                                          str_detect(DSeducation, "Graduated high school with a high school diploma")),
-                                       "High School", as.character(DSeducation2))) %>%
-         mutate(DSeducation2 = if_else((str_detect(DSeducation, "Some job training") | 
-                                          str_detect(DSeducation, "Completed a job training program")),
-                                       "Job Training", as.character(DSeducation2))) %>%
-         mutate(DSeducation2 = if_else((str_detect(DSeducation, "Some college") |
-                                          str_detect(DSeducation, "Completed a college program")),
-                                       "College", as.character(DSeducation2))) ->
-DSSurvey
+  mutate(DSeducation2 = if_else((str_detect(DSeducation, "Completed middle school") | 
+                                   str_detect(DSeducation, "Not completed middle school")),
+                                "No High School", as.character(DSeducation2))) %>% 
+  mutate(DSeducation2 = if_else((str_detect(DSeducation,"Some high school") | 
+                                   str_detect(DSeducation, "Graduated high school with certificate of completion") |
+                                   str_detect(DSeducation, "Graduated high school with a high school diploma")),
+                                "High School", as.character(DSeducation2))) %>%
+  mutate(DSeducation2 = if_else((str_detect(DSeducation, "Some job training") | 
+                                   str_detect(DSeducation, "Completed a job training program")),
+                                "Job Training", as.character(DSeducation2))) %>%
+  mutate(DSeducation2 = if_else((str_detect(DSeducation, "Some college") |
+                                   str_detect(DSeducation, "Completed a college program")),
+                                "College", as.character(DSeducation2))) ->
+  DSSurvey
 
 DSSurvey %>% 
   mutate(DSeducation2 = 
@@ -1085,6 +1085,20 @@ DSSurvey %>%
                   levels = c("No High School", "High School", 
                              "Job Training", "College"))) ->
   DSSurvey
+
+DSSurvey$visitstotal2 <- DSSurvey$visitstotal
+
+DSSurvey %>%
+  mutate(visitstotal2 = if_else((str_detect(visitstotal2, "3-5") |
+                                   str_detect(visitstotal2, "6-8") |
+                                   str_detect(visitstotal2, "9-11") |
+                                   str_detect(visitstotal2, "12 and over")),
+                                "3 or more",
+                                as.character(visitstotal2))) -> DSSurvey
+DSSurvey %>%
+  mutate(visitstotal2 =
+           factor(visitstotal2,
+                  levels = c("0-2", "3 or more"))) -> DSSurvey
 
 DSSurvey$regress2 <- DSSurvey$regress
 DSSurvey$regress2 <- factor(DSSurvey$regress2, levels = c("No", "Yes"))
@@ -1094,6 +1108,3 @@ DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
 DSdisint <- subset(DSSurvey, DSSurvey$DSage >= 10 & DSSurvey$DSage <= 35)
 DSdisintk <- subset(DSSurvey, DSSurvey$DSage >= 10 & DSSurvey$DSage <= 18)
 DSdisintad <- subset(DSSurvey, DSSurvey$DSage >= 18 & DSSurvey$DSage <= 35)
-
-
-
