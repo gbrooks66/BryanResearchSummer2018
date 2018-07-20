@@ -1095,5 +1095,6 @@ DSSurvey %>%
 
 DSkid <- subset(DSSurvey, DSSurvey$DSage <= 17)
 DSadult <- subset(DSSurvey, DSSurvey$DSage > 17)
+DSdisint <- subset(DSSurvey, DSSurvey$DSage >= 10 & DSSurvey$DSage <= 35)
 
 
