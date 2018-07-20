@@ -5,20 +5,18 @@ DSSurvey %>%
   filter(regress == "Yes") %>% 
   mutate(regress = "") %>%
   ggplot(aes(x=as.factor(regress), y=DSage)) +
-  geom_boxplot(fill="green", alpha=0.2) + 
+  geom_boxplot(fill="green", alpha=0.2, notch = FALSE) + 
   facet_wrap(~as.factor(health_apnea2)) +
   xlab("n = 17                                                                                        n = 18") +
   ylab("Age of Individual") + 
   ggtitle("How Sleep Apnea Affects the Regression Age")
 
+table(DSadult$health_apnea2,DSadult$DSeducation)
 
-
-#table(DSadult$health_apnea2,DSadult$DSeducation)
-
-DSadult %>% 
-  # filter(health_apnea == TRUE) %>% 
+DSdisintad %>% 
+  filter(!is.na(regress2)) %>% 
   filter(!is.na(DSeducation2)) %>% 
-  ggplot(aes(health_apnea2, ..count..)) +
+  ggplot(aes(regress2, ..count..)) +
   geom_bar(aes(fill=DSeducation2)) +
   labs(x="n = 18                                      n = 17",
        y="Count",
@@ -26,7 +24,7 @@ DSadult %>%
        title="How Sleep Apnea Affects the Education Level of Individuals with Down Syndrome")
 
 DSadult %>% 
-  select(health_apnea2, DSeducation2) %>% 
+  select(regress2, DSeducation2) %>% 
   table()
 
 #table(DSSurvey$health_apnea2, DSSurvey$mentaldiag_OCD)
@@ -46,12 +44,55 @@ ggplot(DSSurvey, aes(x = health_apnea2, fill = mentaldiag_anxiety)) +
        fill = 'Diagnosis of Anxiety',
        title = 'How Sleep Apnea Affects the Prevalence of Anxiety')
 
-
-ggplot(DSSurvey, aes(x=as.factor(health_apnea2), fill=as.factor(visitstotal) )) +
-  geom_bar() +
+DSdisint %>% 
+  filter(!is.na(regress2)) %>% 
+  ggplot( aes(x=as.factor(regress2), fill=as.factor(visitstotal) )) +
+  geom_bar(position = "fill") +
   labs(x = 'n = 106                                                         n = 79',
        y = 'Count',
        fill = 'Total Hospitalizations in the Last Year',
        title = 'How Sleep Apnea Affects the Number of Hospitalizations in the Last Year')
 
 
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
+
+summary(DSSurvey$mentaldiag_dep)
+summary(DSdisint$mentaldiag_dep)
+  
+table(DSdisint$health_apnea2, DSdisint$regress)
+
+DSdisint %>%
+  filter(!is.na(regress)) %>%
+  filter(regress == "Yes") %>% 
+  mutate(regress = "") %>%
+  ggplot(aes(x=as.factor(regress), y=DSage)) +
+  geom_boxplot(fill="green", alpha=0.2) + 
+  facet_wrap(~as.factor(health_apnea2)) +
+  xlab("n = 17                                                                                        n = 18") +
+  ylab("Age of Individual") + 
+  ggtitle("How Sleep Apnea Affects the Regression Age")
+
+ggplot(DSdisint, aes(x=as.factor(health_apnea2), fill=as.factor(visitstotal) )) +
+  geom_bar() +
+  labs(x = 'n = 106                                                         n = 79',
+       y = 'Count',
+       fill = 'Total Hospitalizations in the Last Year',
+       title = 'How Sleep Apnea Affects the Number of Hospitalizations in the Last Year')
+
+  
+table(DSdisint$regress2,DSdisint$health_apnea2)
+DSdisint %>% 
+  filter(!is.na(regress2)) %>% 
+  ggplot(aes(x=regress2, fill= health_apnea2)) +
+  geom_bar(position = "fill") +
+  labs(x = 'n = 81                            n = 22
+       Has the Individual Experienced a Regression?',
+       y = 'Percent',
+       fill = 'A diagnosis of Sleep Apnea',
+       title = 'How a diagnosis of Sleep Apnea impacts Regression')
+
+
+DSSurvey %>% 
+  filter(regress_cat == TRUE) %>% 
+  select(regress_cat, health_apnea2, DSage) %>% 
+  View()
